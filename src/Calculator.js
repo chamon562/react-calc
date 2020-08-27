@@ -15,17 +15,24 @@ class Calculator extends Component {
     this.setState({ [num]: e.target.value});
   }
 
-  addNum = ( ) =>{
-      let addnum1 = parseInt(this.state.num1)
-      let addnum2 = parseInt(this.state.num2)
-
+  compute = ( ) =>{
+    //   whatever user input in the number it will be addnum1 it was string and we changed to number with parseInt
+      let number1 = parseInt(this.state.num1)
+      let number2 = parseInt(this.state.num2)
+      let math_it_up = {
+        '+': function (x, y) { return x + y },
+        '-': function (x, y) { return x - y },
+        '*': function (x, y) { return x * y },
+        '/': function (x, y) { return x / y }
+      }
+    //   these operators are the sign so calling all the vaues
+    let equation = math_it_up[this.state.operator](number1, number2)
       console.log(this.state)
       this.setState({
-          result: addnum1 + addnum2
-          
+        //   result messses up for addition on first try but when refresh works
+          result: equation
         })
   }
-
   render() {
     return (
       <div className="container">
@@ -38,7 +45,13 @@ class Calculator extends Component {
             value={this.state.num1}
             onChange={(e) => this.setNum(e, "num1")}
           />
-          <span>+</span>
+          <select onChange={(e) => this.setState({operator: e.target.value})}>
+          <option value='+'>+</option>
+          <option value='-'>-</option>
+          <option value='*'>*</option>
+          <option value='/'>/</option>
+
+          </select>
           <input
             type="number"
             name="num2"
@@ -46,7 +59,7 @@ class Calculator extends Component {
             value={this.state.num2}
             onChange={(e) => this.setNum(e, "num2")}
           />
-          <button onClick={this.addNum} >=</button>
+          <button onClick={this.compute} >=</button>
           <h3>{this.state.result}</h3>
         </div>
       </div>
